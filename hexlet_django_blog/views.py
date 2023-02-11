@@ -2,10 +2,12 @@ from django.shortcuts import render
 from django.views.generic.base import TemplateView
 
 
+# Данный код актуален до 7. Представления (Views)
 # def index(request):
 #     return render(request, 'index.html', context={
 #         'who': 'World',
 #     })
+
 
 # 7 Представления (Views) вместо предыдущ. функции
 class HomePageView(TemplateView):
