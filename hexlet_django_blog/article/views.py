@@ -4,6 +4,8 @@ from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse
 
+from hexlet_django_blog.article.models import Article
+
 
 # # Данный код актуален до 7. Представления (Views)
 # def index(request):
@@ -18,12 +20,22 @@ from django.urls import reverse
 #         return HttpResponse('article')
 
 
-# 8. Маршрутизация
+# 8. Маршрутизация закомитчена из-за 13. Список (Article)
+# class IndexView(View):
+#
+#     def get(self, request, tags, article_id):
+#         return HttpResponse(f'Статья номер {article_id}. Тег {tags}')
+#
+#
+# def article(request):
+#     return redirect(reverse('current_article', kwargs={'tags': 'python', 'article_id': 42}))
+
+
+# 13. Список (CRUD)
 class IndexView(View):
 
-    def get(self, request, tags, article_id):
-        return HttpResponse(f'Статья номер {article_id}. Тег {tags}')
-
-
-def article(request):
-    return redirect(reverse('current_article', kwargs={'tags': 'python', 'article_id': 42}))
+    def get(self, request, *args, **kwargs):
+        articles = Article.objects.all()[:15]
+        return render(request, 'articles/index.html', context={
+            'articles': articles,
+        })
