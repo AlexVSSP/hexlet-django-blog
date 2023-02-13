@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 
 from hexlet_django_blog.article.models import Article
+from hexlet_django_blog.article.forms import ArticleForm
 
 
 # # Данный код актуален до 7. Представления (Views)
@@ -49,3 +50,18 @@ class ArticleView(View):
         return render(request, 'articles/show.html', context={
             'article': article,
         })
+
+
+# 16. Создание (CRUD)
+class ArticleFormCreateView(View):
+
+    def get(self, request, *args, **kwargs):
+        form = ArticleForm()
+        return render(request, 'articles/create.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        form = ArticleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/articles')
+        return render(request, 'articles/create.html', {'form': form})
