@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.views import View
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib import messages
 
 from hexlet_django_blog.article.models import Article
 from hexlet_django_blog.article.forms import ArticleForm
@@ -63,7 +64,9 @@ class ArticleFormCreateView(View):
         form = ArticleForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, 'The article has been created successfully.')
             return redirect('/articles')
+        messages.error(request, 'Please correct the following errors:')
         return render(request, 'articles/create.html', {'form': form})
 
 
@@ -82,8 +85,9 @@ class ArticleFormEditView(View):
         form = ArticleForm(request.POST, instance=article)
         if form.is_valid():
             form.save()
+            messages.success(request, 'The article has been updated successfully.')
             return redirect('/articles')
-
+        messages.error(request, 'Please correct the following errors:')
         return render(request, 'articles/update.html', {'form': form, 'article_id': article_id})
 
 
@@ -95,4 +99,5 @@ class ArticleFormDestroyView(View):
         article = Article.objects.get(id=article_id)
         if article:
             article.delete()
+            messages.success(request, 'The article has been removed successfully.')
         return redirect('/articles')
